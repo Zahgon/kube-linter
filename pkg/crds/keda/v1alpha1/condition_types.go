@@ -81,25 +81,10 @@ type Condition struct {
 type Conditions []Condition
 
 // IsTrue is true if the condition is True
-func (c *Condition) IsTrue() bool {
-	if c == nil {
-		return false
-	}
-	return c.Status == metav1.ConditionTrue
-}
+func (c *Condition) IsTrue() bool { _ = "STUB: not implemented"; return false }
 
 // IsFalse is true if the condition is False
-func (c *Condition) IsFalse() bool {
-	if c == nil {
-		return false
-	}
-	return c.Status == metav1.ConditionFalse
-}
+func (c *Condition) IsFalse() bool { _ = "STUB: not implemented"; return false }
 
 // IsUnknown is true if the condition is Unknown
-func (c *Condition) IsUnknown() bool {
-	if c == nil {
-		return true
-	}
-	return c.Status == metav1.ConditionUnknown
-}
+func (c *Condition) IsUnknown() bool { _ = "STUB: not implemented"; return false }

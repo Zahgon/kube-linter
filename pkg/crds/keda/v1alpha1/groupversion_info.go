@@ -20,7 +20,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -47,25 +46,15 @@ func init() {
 }
 
 // Adds the list of known types to api.Scheme.
-func addKnownTypes(scheme *runtime.Scheme) error {
-	scheme.AddKnownTypes(SchemeGroupVersion,
-		&ScaledJobList{},
-		&ScaledJob{},
-		&ScaledObjectList{},
-		&ScaledObject{},
-	)
-	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
-	return nil
-}
+func addKnownTypes(scheme *runtime.Scheme) error { _ = "STUB: not implemented"; return nil }
 
 // Kind takes an unqualified kind and returns back a Group qualified GroupKind
 // added for generated clientset
-func Kind(kind string) schema.GroupKind {
-	return GroupVersion.WithKind(kind).GroupKind()
-}
+func Kind(kind string) schema.GroupKind { _ = "STUB: not implemented"; return *new(schema.GroupKind) }
 
 // Resource takes an unqualified resource and returns a Group qualified GroupResource
 // added for generated clientset
 func Resource(resource string) schema.GroupResource {
-	return GroupVersion.WithResource(resource).GroupResource()
+	_ = "STUB: not implemented"
+	return *new(schema.GroupResource)
 }

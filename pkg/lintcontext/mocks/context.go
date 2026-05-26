@@ -12,38 +12,27 @@ type MockLintContext struct {
 }
 
 // Objects returns all the objects under this MockLintContext
-func (l *MockLintContext) Objects() []lintcontext.Object {
-	result := make([]lintcontext.Object, 0, len(l.objects))
-	for key, p := range l.objects {
-		metadata := lintcontext.ObjectMetadata{}
-		if raw, ok := l.rawObjects[key]; ok {
-			metadata.Raw = raw
-		}
-		result = append(result, lintcontext.Object{Metadata: metadata, K8sObject: p})
-	}
-	return result
-}
+func (l *MockLintContext) Objects() []lintcontext.Object { _ = "STUB: not implemented"; return nil }
 
 // InvalidObjects is not implemented. For now we don't care about invalid objects for mock context.
 func (l *MockLintContext) InvalidObjects() []lintcontext.InvalidObject {
+	_ = "STUB: not implemented"
+
+	// NewMockContext returns an empty mockLintContext
 	return nil
 }
 
-// NewMockContext returns an empty mockLintContext
-func NewMockContext() *MockLintContext {
-	return &MockLintContext{
-		objects:    make(map[string]k8sutil.Object),
-		rawObjects: make(map[string][]byte),
-	}
-}
+func NewMockContext() *MockLintContext { _ = "STUB: not implemented"; return nil }
 
 // AddObject adds an object to the MockLintContext
 func (l *MockLintContext) AddObject(key string, obj k8sutil.Object) {
-	l.objects[key] = obj
+	_ = "STUB: not implemented"
+	return
+
+	// AddObjectWithRaw adds an object to the MockLintContext with raw YAML data
 }
 
-// AddObjectWithRaw adds an object to the MockLintContext with raw YAML data
 func (l *MockLintContext) AddObjectWithRaw(key string, obj k8sutil.Object, raw []byte) {
-	l.objects[key] = obj
-	l.rawObjects[key] = raw
+	_ = "STUB: not implemented"
+	return
 }

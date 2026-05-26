@@ -21,6 +21,4 @@ func init() {
 }
 
 // GetIngressAPIVersion returns Ingress's apiversion
-func GetIngressAPIVersion() string {
-	return ingressGVK.GroupVersion().String()
-}
+func GetIngressAPIVersion() string { _ = "STUB: not implemented"; return "" }

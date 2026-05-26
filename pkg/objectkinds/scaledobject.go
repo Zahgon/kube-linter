@@ -1,8 +1,6 @@
 package objectkinds
 
 import (
-	"fmt"
-
 	kedaV1Alpha1 "golang.stackrox.io/kube-linter/pkg/crds/keda/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -16,15 +14,11 @@ var (
 	ScaledObjectV1Alpha1 = kedaV1Alpha1.SchemeGroupVersion.WithKind(ScaledObject)
 )
 
-func isScaledObject(gvk schema.GroupVersionKind) bool {
-	return gvk == ScaledObjectV1Alpha1
-}
+func isScaledObject(gvk schema.GroupVersionKind) bool { _ = "STUB: not implemented"; return false }
 
 func init() {
 	RegisterObjectKind(ScaledObject, MatcherFunc(isScaledObject))
 }
 
 // GetScaledObjectAPIVersion returns ScaledObject's APIVersion
-func GetScaledObjectAPIVersion(version string) string {
-	return fmt.Sprintf("%s/%s", ScaledObjectV1Alpha1.Group, version)
-}
+func GetScaledObjectAPIVersion(version string) string { _ = "STUB: not implemented"; return "" }

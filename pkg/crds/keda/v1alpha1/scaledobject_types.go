@@ -17,10 +17,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"fmt"
-	"reflect"
-	"strconv"
-
 	autoscalingv2 "k8s.io/api/autoscaling/v2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -204,83 +200,36 @@ type ScaledObjectList struct {
 }
 
 // GenerateIdentifier returns identifier for the object in for "kind.namespace.name"
-func (so *ScaledObject) GenerateIdentifier() string {
-	return GenerateIdentifier("ScaledObject", so.Namespace, so.Name)
-}
+func (so *ScaledObject) GenerateIdentifier() string { _ = "STUB: not implemented"; return "" }
 
 // HasPausedAnnotation returns whether this ScaledObject has PausedAnnotation or PausedReplicasAnnotation
-func (so *ScaledObject) HasPausedAnnotation() bool {
-	_, pausedAnnotationFound := so.GetAnnotations()[PausedAnnotation]
-	_, pausedReplicasAnnotationFound := so.GetAnnotations()[PausedReplicasAnnotation]
-	return pausedAnnotationFound || pausedReplicasAnnotationFound
-}
+func (so *ScaledObject) HasPausedAnnotation() bool { _ = "STUB: not implemented"; return false }
 
 // NeedToBePausedByAnnotation will check whether ScaledObject needs to be paused based on PausedAnnotation or PausedReplicaCount
-func (so *ScaledObject) NeedToBePausedByAnnotation() bool {
-	_, pausedReplicasAnnotationFound := so.GetAnnotations()[PausedReplicasAnnotation]
-	if pausedReplicasAnnotationFound {
-		return true
-	}
-
-	return getBoolAnnotation(so, PausedAnnotation)
-}
+func (so *ScaledObject) NeedToBePausedByAnnotation() bool { _ = "STUB: not implemented"; return false }
 
 // NeedToPauseScaleIn checks whether Scale In actions for a ScaledObject need to be blocked based on the PausedScaleIn annotation
-func (so *ScaledObject) NeedToPauseScaleIn() bool {
-	return getBoolAnnotation(so, PausedScaleInAnnotation)
-}
+func (so *ScaledObject) NeedToPauseScaleIn() bool { _ = "STUB: not implemented"; return false }
 
 func getBoolAnnotation(so *ScaledObject, annotation string) bool {
-	value, found := so.GetAnnotations()[annotation]
-	if !found {
-		return false
-	}
-	boolVal, err := strconv.ParseBool(value)
-	if err != nil {
-		// if annotation value is not a boolean, we assume true
-		return true
-	}
-	return boolVal
+	_ = "STUB: not implemented"
+	return false
 }
+
+// if annotation value is not a boolean, we assume true
 
 // IsUsingModifiers determines whether scalingModifiers are defined or not
-func (so *ScaledObject) IsUsingModifiers() bool {
-	return so.Spec.Advanced != nil && !reflect.DeepEqual(so.Spec.Advanced.ScalingModifiers, ScalingModifiers{})
-}
+func (so *ScaledObject) IsUsingModifiers() bool { _ = "STUB: not implemented"; return false }
 
 // GetHPAMinReplicas returns MinReplicas based on definition in ScaledObject or default value if not defined
-func (so *ScaledObject) GetHPAMinReplicas() *int32 {
-	if so.Spec.MinReplicaCount != nil && *so.Spec.MinReplicaCount > 0 {
-		return so.Spec.MinReplicaCount
-	}
-	tmp := defaultHPAMinReplicas
-	return &tmp
-}
+func (so *ScaledObject) GetHPAMinReplicas() *int32 { _ = "STUB: not implemented"; return nil }
 
 // GetHPAMaxReplicas returns MaxReplicas based on definition in ScaledObject or default value if not defined
-func (so *ScaledObject) GetHPAMaxReplicas() int32 {
-	if so.Spec.MaxReplicaCount != nil {
-		return *so.Spec.MaxReplicaCount
-	}
-	return defaultHPAMaxReplicas
-}
+func (so *ScaledObject) GetHPAMaxReplicas() int32 { _ = "STUB: not implemented"; return 0 }
 
 // CheckReplicaCountBoundsAreValid checks that Idle/Min/Max ReplicaCount defined in ScaledObject are correctly specified
 // i.e. that Min is not greater than Max or Idle greater or equal to Min
 func CheckReplicaCountBoundsAreValid(scaledObject *ScaledObject) error {
-	minReplicas := int32(0)
-	if scaledObject.Spec.MinReplicaCount != nil {
-		minReplicas = *scaledObject.GetHPAMinReplicas()
-	}
-	maxReplicas := scaledObject.GetHPAMaxReplicas()
-
-	if minReplicas > maxReplicas {
-		return fmt.Errorf("MinReplicaCount=%d must be less than MaxReplicaCount=%d", minReplicas, maxReplicas)
-	}
-
-	if scaledObject.Spec.IdleReplicaCount != nil && *scaledObject.Spec.IdleReplicaCount >= minReplicas {
-		return fmt.Errorf("IdleReplicaCount=%d must be less than MinReplicaCount=%d", *scaledObject.Spec.IdleReplicaCount, minReplicas)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }

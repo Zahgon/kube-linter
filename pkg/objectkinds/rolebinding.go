@@ -21,6 +21,4 @@ func init() {
 }
 
 // GetRoleBindingAPIVersion returns RoleBinding's APIVersion
-func GetRoleBindingAPIVersion() string {
-	return roleBindingGVK.GroupVersion().String()
-}
+func GetRoleBindingAPIVersion() string { _ = "STUB: not implemented"; return "" }

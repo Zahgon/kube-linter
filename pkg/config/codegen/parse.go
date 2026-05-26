@@ -1,20 +1,11 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
-	"errors"
-	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
-	"reflect"
-	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
-	"golang.stackrox.io/kube-linter/internal/utils"
-	"k8s.io/gengo/parser"
 	"k8s.io/gengo/types"
 )
 
@@ -71,18 +62,9 @@ var (
 	defaultValueReprsByTypeName = make(map[string]string)
 )
 
-func mustGetDefaultValueRepr(typeName string) string {
-	valueRepr := defaultValueReprsByTypeName[typeName]
-	if valueRepr == "" {
-		panic(fmt.Sprintf("couldn't represent default value for type %s", typeName))
-	}
-	return valueRepr
-}
+func mustGetDefaultValueRepr(typeName string) string { _ = "STUB: not implemented"; return "" }
 
-func newFlagType(typeName, defaultValueRepr string) string {
-	defaultValueReprsByTypeName[typeName] = defaultValueRepr
-	return typeName
-}
+func newFlagType(typeName, defaultValueRepr string) string { _ = "STUB: not implemented"; return "" }
 
 type flagDesc struct {
 	Name        string
@@ -95,152 +77,23 @@ type templateElem struct {
 	FlagDesc flagDesc
 }
 
-func getJSONKey(member types.Member) (string, error) {
-	jsonTag := reflect.StructTag(member.Tags).Get("json")
-	if jsonTag == "" {
-		return "", fmt.Errorf("member %v does not specify a json tag", member)
-	}
-	return strings.Split(jsonTag, ",")[0], nil
-}
+func getJSONKey(member types.Member) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func getDescription(member types.Member) string {
-	firstCommentLineWithMetadata := len(member.CommentLines)
-	for i, commentLine := range member.CommentLines {
-		if strings.HasPrefix(commentLine, metadataMarker) {
-			firstCommentLineWithMetadata = i
-			break
-		}
-	}
-	return strings.Join(member.CommentLines[:firstCommentLineWithMetadata], " ")
-}
+func getDescription(member types.Member) string { _ = "STUB: not implemented"; return "" }
 
-func getCobraTypeFromMember(memberType *types.Type) string {
-	switch memberType.Kind {
-	case types.Builtin:
-		switch memberType {
-		case types.String:
-			return stringType
-		case types.Int:
-			return intType
-		case types.Float32:
-			return float32Type
-		case types.Float64:
-			return float64Type
-		case types.Bool:
-			return boolType
-		}
-	case types.Slice:
-		if memberType.Elem == types.String {
-			return stringSliceType
-		}
-	}
-	return ""
-}
+func getCobraTypeFromMember(memberType *types.Type) string { _ = "STUB: not implemented"; return "" }
 
 func constructFlagDescsFromStruct(typeSpec *types.Type, jsonPathSoFar []string) ([]flagDesc, error) {
-	var flagDescs []flagDesc
-	for _, member := range types.FlattenMembers(typeSpec.Members) {
-		extractedTags := types.ExtractCommentTags("+", member.CommentLines)
-		flagNameTags := extractedTags[flagNameTagKey]
-		if len(flagNameTags) > 1 {
-			return nil, fmt.Errorf("got multiple flag name tags in member: %v", member)
-		}
-		var flagName string
-		if len(flagNameTags) == 1 {
-			flagName = flagNameTags[0]
-		}
-		if flagName == "-" {
-			continue
-		}
-
-		jsonKey, err := getJSONKey(member)
-		if err != nil {
-			return nil, err
-		}
-
-		jsonPath := append([]string{}, jsonPathSoFar...)
-		jsonPath = append(jsonPath, jsonKey)
-
-		if member.Type.Kind == types.Struct {
-			subDescs, err := constructFlagDescsFromStruct(member.Type, jsonPath)
-			if err != nil {
-				return nil, fmt.Errorf("handling field %s: %w", member.Name, err)
-			}
-			flagDescs = append(flagDescs, subDescs...)
-			continue
-		}
-
-		// If we got here, it must be a primitive field.
-		cobraType := getCobraTypeFromMember(member.Type)
-		if cobraType == "" {
-			return nil, fmt.Errorf("couldn't find mapped cobra type for member %v", member)
-		}
-		flagDescs = append(flagDescs, flagDesc{
-			Name:        flagName,
-			JSONPath:    strings.Join(jsonPath, "."),
-			Description: getDescription(member),
-			CobraType:   cobraType,
-		})
-	}
-	return flagDescs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func mainCmd() error {
-	flag.Parse()
-	outFileName := flag.Arg(0)
-	if outFileName == "" {
-		return errors.New("out file name not specified")
-	}
-	b := parser.New()
+// If we got here, it must be a primitive field.
 
-	// This avoids parsing generated files in the package (since we add +build !flagcodegen to them,
-	// which makes the parsing much quicker since the parser doesn't have to load any imported packages).
-	b.AddBuildTags("flagcodegen")
-	if err := b.AddDir("."); err != nil {
-		return err
-	}
-	typeUniverse, err := b.FindTypes()
-	if err != nil {
-		return err
-	}
+func mainCmd() error { _ = "STUB: not implemented"; return nil }
 
-	pkgNames := b.FindPackages()
-	if len(pkgNames) != 1 {
-		return fmt.Errorf("found unexpected number of packages in %+v: %d", pkgNames, len(pkgNames))
-	}
-
-	pkg := typeUniverse.Package(pkgNames[0])
-	paramsType := pkg.Type(paramsStructName)
-
-	flagDescs, err := constructFlagDescsFromStruct(paramsType, nil)
-	if err != nil {
-		return err
-	}
-
-	var templateObj []templateElem
-
-	for _, flagDesc := range flagDescs {
-		buf := bytes.NewBuffer(nil)
-		enc := json.NewEncoder(buf)
-		enc.SetIndent("", "\t")
-		if err := enc.Encode(flagDesc); err != nil {
-			return fmt.Errorf("couldn't marshal param %v: %w", flagDesc, err)
-		}
-
-		templateObj = append(templateObj, templateElem{
-			FlagDesc: flagDesc,
-		})
-	}
-	outF, err := os.Create(filepath.Clean(outFileName))
-	if err != nil {
-		return fmt.Errorf("creating output file: %w", err)
-	}
-	defer utils.IgnoreError(outF.Close)
-	if err := fileTemplate.Execute(outF, templateObj); err != nil {
-		return fmt.Errorf("writing template to File: %w", err)
-	}
-	return nil
-}
+// This avoids parsing generated files in the package (since we add +build !flagcodegen to them,
+// which makes the parsing much quicker since the parser doesn't have to load any imported packages).
 
 func main() {
 	if err := mainCmd(); err != nil {

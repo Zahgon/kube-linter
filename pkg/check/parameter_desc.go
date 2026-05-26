@@ -1,9 +1,5 @@
 package check
 
-import (
-	"golang.stackrox.io/kube-linter/internal/pointers"
-)
-
 // ParameterType represents the expected type of a particular parameter.
 type ParameterType string
 
@@ -73,36 +69,11 @@ type HumanReadableParamDesc struct {
 
 // HumanReadableFields returns a human-friendly representation of this ParameterDesc.
 func (p *ParameterDesc) HumanReadableFields() HumanReadableParamDesc {
-	return transform(p, 0)
+	_ = "STUB: not implemented"
+	return *new(HumanReadableParamDesc)
 }
 
 func transform(p *ParameterDesc, nestingLevel int) HumanReadableParamDesc {
-	out := HumanReadableParamDesc{
-		Name:         p.Name,
-		Type:         p.Type,
-		Description:  p.Description,
-		Required:     p.Required,
-		Examples:     p.Examples,
-		NestingLevel: nestingLevel,
-	}
-
-	if p.Type == StringType ||
-		(p.Type == ArrayType && p.ArrayElemType == StringType) {
-		out.RegexAllowed = pointers.Bool(!p.NoRegex)
-		out.NegationAllowed = pointers.Bool(!p.NotNegatable)
-	}
-
-	if p.Type == ArrayType {
-		out.ArrayElemType = p.ArrayElemType
-	}
-
-	if len(p.SubParameters) > 0 {
-		subParamFields := make([]HumanReadableParamDesc, 0, len(p.SubParameters))
-		for i := range p.SubParameters {
-			subParamFields = append(subParamFields, transform(&p.SubParameters[i], nestingLevel+1))
-		}
-		out.SubParameters = subParamFields
-	}
-
-	return out
+	_ = "STUB: not implemented"
+	return *new(HumanReadableParamDesc)
 }

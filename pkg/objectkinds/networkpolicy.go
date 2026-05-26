@@ -21,6 +21,4 @@ func init() {
 }
 
 // GetNetworkPolicyAPIVersion returns networkpolicy's apiversion
-func GetNetworkPolicyAPIVersion() string {
-	return networkpolicyGVK.GroupVersion().String()
-}
+func GetNetworkPolicyAPIVersion() string { _ = "STUB: not implemented"; return "" }

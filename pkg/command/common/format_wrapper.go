@@ -1,8 +1,6 @@
 package common
 
 import (
-	"encoding/json"
-	"fmt"
 	"io"
 )
 
@@ -30,27 +28,16 @@ type Formatters struct {
 }
 
 // GetEnabledFormatters returns a string slice enumerating all enabled formatters of this instance.
-func (f Formatters) GetEnabledFormatters() []string {
-	keys := make([]string, 0, len(f.Formatters))
-	for k := range f.Formatters {
-		keys = append(keys, string(k))
-	}
-	return keys
-}
+func (f Formatters) GetEnabledFormatters() []string { _ = "STUB: not implemented"; return nil }
 
 // FormatterByType looks up formatter for a given type among the ones configured in this instance.
 func (f Formatters) FormatterByType(t string) (FormatFunc, error) {
-	formatter := f.Formatters[FormatType(t)]
-	if formatter == nil {
-		return nil, fmt.Errorf("unknown format: %q", t)
-	}
-	return formatter, nil
+	_ = "STUB: not implemented"
+	return *new(FormatFunc), nil
 }
 
 // FormatJSON formats data as JSON, i.e. implements JSONFormat.
-func FormatJSON(out io.Writer, data interface{}) error {
-	return json.NewEncoder(out).Encode(data)
-}
+func FormatJSON(out io.Writer, data interface{}) error { _ = "STUB: not implemented"; return nil }
 
 // Verify that FormatJSON follows the contract of FormatFunc.
 var _ FormatFunc = FormatJSON

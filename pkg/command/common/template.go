@@ -6,9 +6,7 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/Masterminds/sprig/v3"
 	"github.com/fatih/color"
-	"golang.stackrox.io/kube-linter/internal/utils"
 )
 
 var (
@@ -49,20 +47,18 @@ var (
 // MustInstantiateMarkdownTemplate instantiates the given go template with a common list of markdown functions.
 // It panics if there is an error.
 func MustInstantiateMarkdownTemplate(templateStr string, customFuncMap template.FuncMap) *template.Template {
-	tpl, err := instantiateTemplate(templateStr, markdownFuncs, customFuncMap)
-	utils.Must(err)
-	return tpl
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MustInstantiatePlainTemplate instantiates the given go template with a common list of functions for console output.
 // It panics if there is an error.
 func MustInstantiatePlainTemplate(templateStr string, customFuncMap template.FuncMap) *template.Template {
-	tpl, err := instantiateTemplate(templateStr, plainFuncs, customFuncMap)
-	utils.Must(err)
-	return tpl
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func instantiateTemplate(templateStr string, commonFuncMap, customFuncMap template.FuncMap) (*template.Template, error) {
-	tpl, err := template.New("").Funcs(sprig.TxtFuncMap()).Funcs(commonFuncMap).Funcs(customFuncMap).Parse(templateStr)
-	return tpl, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }

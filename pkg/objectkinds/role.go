@@ -22,6 +22,4 @@ func init() {
 }
 
 // GetRoleAPIVersion returns Role's APIVersion
-func GetRoleAPIVersion() string {
-	return roleGVK.GroupVersion().String()
-}
+func GetRoleAPIVersion() string { _ = "STUB: not implemented"; return "" }

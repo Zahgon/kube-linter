@@ -1,8 +1,6 @@
 package wildcardinrules
 
 import (
-	"fmt"
-
 	"golang.stackrox.io/kube-linter/pkg/check"
 	"golang.stackrox.io/kube-linter/pkg/config"
 	"golang.stackrox.io/kube-linter/pkg/diagnostic"
@@ -44,18 +42,6 @@ func init() {
 
 // find wildcards used in rules
 func findWildCard(rules []rbacV1.PolicyRule) []diagnostic.Diagnostic {
-	results := []diagnostic.Diagnostic{}
-	for _, rule := range rules {
-		for _, item := range rule.Resources {
-			if item == "*" {
-				results = append(results, diagnostic.Diagnostic{Message: fmt.Sprintf("wildcard %q in resource specification", item)})
-			}
-		}
-		for _, item := range rule.Verbs {
-			if item == "*" {
-				results = append(results, diagnostic.Diagnostic{Message: fmt.Sprintf("wildcard %q in verb specification", item)})
-			}
-		}
-	}
-	return results
+	_ = "STUB: not implemented"
+	return nil
 }

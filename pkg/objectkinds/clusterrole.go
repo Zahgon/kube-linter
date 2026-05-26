@@ -1,8 +1,6 @@
 package objectkinds
 
 import (
-	"fmt"
-
 	rbacV1 "k8s.io/api/rbac/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -23,6 +21,4 @@ func init() {
 }
 
 // GetClusterRoleAPIVersion returns ClusterRole's APIVersion
-func GetClusterRoleAPIVersion() string {
-	return fmt.Sprintf("%s/%s", clusterRoleGVK.Group, clusterRoleGVK.Version)
-}
+func GetClusterRoleAPIVersion() string { _ = "STUB: not implemented"; return "" }

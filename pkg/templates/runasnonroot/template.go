@@ -15,22 +15,12 @@ import (
 )
 
 func effectiveRunAsNonRoot(podSC *v1.PodSecurityContext, containerSC *v1.SecurityContext) bool {
-	if containerSC != nil && containerSC.RunAsNonRoot != nil {
-		return *containerSC.RunAsNonRoot
-	}
-	if podSC != nil && podSC.RunAsNonRoot != nil {
-		return *podSC.RunAsNonRoot
-	}
+	_ = "STUB: not implemented"
 	return false
 }
 
 func effectiveRunAsUser(podSC *v1.PodSecurityContext, containerSC *v1.SecurityContext) *int64 {
-	if containerSC != nil && containerSC.RunAsUser != nil {
-		return containerSC.RunAsUser
-	}
-	if podSC != nil {
-		return podSC.RunAsUser
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 

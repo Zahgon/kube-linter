@@ -122,29 +122,9 @@ type Rollout struct {
 }
 
 // MaxReplicaCount returns MaxReplicaCount
-func (s ScaledJob) MaxReplicaCount() int64 {
-	if s.Spec.MaxReplicaCount != nil {
-		if s.Spec.MinReplicaCount != nil && *s.Spec.MinReplicaCount > *s.Spec.MaxReplicaCount {
-			return int64(*s.Spec.MaxReplicaCount)
-		}
-		return int64(*s.Spec.MaxReplicaCount) - s.MinReplicaCount()
-	}
-
-	return defaultScaledJobMaxReplicaCount
-}
+func (s ScaledJob) MaxReplicaCount() int64 { _ = "STUB: not implemented"; return 0 }
 
 // MinReplicaCount returns MinReplicaCount
-func (s ScaledJob) MinReplicaCount() int64 {
-	if s.Spec.MinReplicaCount != nil {
-		if s.Spec.MaxReplicaCount != nil &&
-			*s.Spec.MinReplicaCount > *s.Spec.MaxReplicaCount {
-			return int64(*s.Spec.MaxReplicaCount)
-		}
-		return int64(*s.Spec.MinReplicaCount)
-	}
-	return defaultScaledJobMinReplicaCount
-}
+func (s ScaledJob) MinReplicaCount() int64 { _ = "STUB: not implemented"; return 0 }
 
-func (s *ScaledJob) GenerateIdentifier() string {
-	return GenerateIdentifier("ScaledJob", s.Namespace, s.Name)
-}
+func (s *ScaledJob) GenerateIdentifier() string { _ = "STUB: not implemented"; return "" }

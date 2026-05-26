@@ -1,19 +1,12 @@
 package checks
 
 import (
-	"fmt"
-	"os"
-	"sort"
-	"strings"
 	"text/template"
 
 	"github.com/spf13/cobra"
 	"golang.stackrox.io/kube-linter/internal/defaultchecks"
-	"golang.stackrox.io/kube-linter/internal/flagutil"
-	"golang.stackrox.io/kube-linter/pkg/builtinchecks"
 	"golang.stackrox.io/kube-linter/pkg/command/common"
 	"golang.stackrox.io/kube-linter/pkg/config"
-	"golang.stackrox.io/kube-linter/pkg/templates"
 )
 
 const (
@@ -73,48 +66,15 @@ var (
 	}
 )
 
-func listCommand() *cobra.Command {
-	format := flagutil.NewEnumFlag("Output format", formatters.GetEnabledFormatters(), common.PlainFormat)
-	c := &cobra.Command{
-		Use:   "list",
-		Short: "List built-in checks",
-		Args:  cobra.NoArgs,
-		RunE: func(cmd *cobra.Command, _ []string) error {
-			checks, err := builtinchecks.List()
-			if err != nil {
-				return err
-			}
-			sort.Slice(checks, func(i, j int) bool {
-				return checks[i].Name < checks[j].Name
-			})
-			renderFunc, err := formatters.FormatterByType(format.String())
-			if err != nil {
-				return err
-			}
-			return renderFunc(os.Stdout, checks)
-		},
-	}
-	c.Flags().Var(format, "format", format.Usage())
-	return c
-}
+func listCommand() *cobra.Command { _ = "STUB: not implemented"; return nil }
 
 // Command defines the root of the checks command.
-func Command() *cobra.Command {
-	c := &cobra.Command{
-		Use:   "checks",
-		Short: "View more information on lint checks",
-	}
-	c.AddCommand(listCommand())
-	return c
-}
+func Command() *cobra.Command { _ = "STUB: not implemented"; return nil }
 
 // GetTemplateLink returns html anchor string for the template corresponding to the given check so that it can be used
 // to reference the template section in a rendered markdown.
 // E.g. template name "Deprecated Service Account Field" becomes "deprecated-service-account-field" html anchor.
 func GetTemplateLink(check *config.Check) (string, error) {
-	t, found := templates.Get(check.Template)
-	if !found {
-		return "", fmt.Errorf("unexpected: check %v references non-existent template?", check)
-	}
-	return strings.Join(strings.Fields(strings.ToLower(t.HumanName)), "-"), nil
+	_ = "STUB: not implemented"
+	return "", nil
 }

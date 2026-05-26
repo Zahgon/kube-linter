@@ -68,10 +68,6 @@ func init() {
 
 // isInList returns true if a match found in the list for the given name
 func isInList(regexlist []*regexp.Regexp, name string) bool {
-	for _, regex := range regexlist {
-		if regex.MatchString(name) {
-			return true
-		}
-	}
+	_ = "STUB: not implemented"
 	return false
 }

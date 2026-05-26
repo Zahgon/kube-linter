@@ -162,26 +162,11 @@ type AuthPodIdentity struct {
 	IdentityOwner *string `json:"identityOwner,omitempty"`
 }
 
-func (a *AuthPodIdentity) GetIdentityID() string {
-	if a.IdentityID == nil {
-		return ""
-	}
-	return *a.IdentityID
-}
+func (a *AuthPodIdentity) GetIdentityID() string { _ = "STUB: not implemented"; return "" }
 
-func (a *AuthPodIdentity) GetIdentityTenantID() string {
-	if a.IdentityTenantID == nil {
-		return ""
-	}
-	return *a.IdentityTenantID
-}
+func (a *AuthPodIdentity) GetIdentityTenantID() string { _ = "STUB: not implemented"; return "" }
 
-func (a *AuthPodIdentity) GetIdentityAuthorityHost() string {
-	if a.IdentityAuthorityHost == nil {
-		return ""
-	}
-	return *a.IdentityAuthorityHost
-}
+func (a *AuthPodIdentity) GetIdentityAuthorityHost() string { _ = "STUB: not implemented"; return "" }
 
 // AuthConfigMapTargetRef is used to authenticate using a reference to a config map
 type AuthConfigMapTargetRef AuthTargetRef

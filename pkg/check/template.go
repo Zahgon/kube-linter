@@ -28,9 +28,6 @@ type Template struct {
 
 // HumanReadableParameters helper transforms each of Template.Parameters to HumanReadableParamDesc.
 func (t *Template) HumanReadableParameters() []HumanReadableParamDesc {
-	out := make([]HumanReadableParamDesc, 0, len(t.Parameters))
-	for _, param := range t.Parameters {
-		out = append(out, param.HumanReadableFields())
-	}
-	return out
+	_ = "STUB: not implemented"
+	return nil
 }

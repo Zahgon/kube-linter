@@ -19,6 +19,4 @@ func init() {
 	}))
 }
 
-func GetPersistentVolumeClaimAPIVersion() string {
-	return persistentvolumeclaimGVK.GroupVersion().String()
-}
+func GetPersistentVolumeClaimAPIVersion() string { _ = "STUB: not implemented"; return "" }

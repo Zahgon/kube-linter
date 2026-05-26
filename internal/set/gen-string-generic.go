@@ -5,12 +5,6 @@
 
 package set
 
-import (
-	"fmt"
-	"sort"
-	"strings"
-)
-
 // If you want to add a set for your custom type, simply add another go generate line along with the
 // existing ones. If you're creating a set for a primitive type, you can follow the example of "string"
 // and create the generated file in this package.
@@ -25,296 +19,128 @@ import (
 type StringSet map[string]struct{}
 
 // Add adds an element of type string.
-func (k *StringSet) Add(i string) bool {
-	if *k == nil {
-		*k = make(map[string]struct{})
-	}
-
-	oldLen := len(*k)
-	(*k)[i] = struct{}{}
-	return len(*k) > oldLen
-}
+func (k *StringSet) Add(i string) bool { _ = "STUB: not implemented"; return false }
 
 // AddMatching is a utility function that adds all the elements that match the given function to the set.
 func (k *StringSet) AddMatching(matchFunc func(string) bool, elems ...string) bool {
-	oldLen := len(*k)
-	for _, elem := range elems {
-		if !matchFunc(elem) {
-			continue
-		}
-		if *k == nil {
-			*k = make(map[string]struct{})
-		}
-		(*k)[elem] = struct{}{}
-	}
-	return len(*k) > oldLen
+	_ = "STUB: not implemented"
+	return false
 }
 
 // AddAll adds all elements of type string. The return value is true if any new element
 // was added.
-func (k *StringSet) AddAll(is ...string) bool {
-	if len(is) == 0 {
-		return false
-	}
-	if *k == nil {
-		*k = make(map[string]struct{})
-	}
-
-	oldLen := len(*k)
-	for _, i := range is {
-		(*k)[i] = struct{}{}
-	}
-	return len(*k) > oldLen
-}
+func (k *StringSet) AddAll(is ...string) bool { _ = "STUB: not implemented"; return false }
 
 // Remove removes an element of type string.
-func (k *StringSet) Remove(i string) bool {
-	if len(*k) == 0 {
-		return false
-	}
-
-	oldLen := len(*k)
-	delete(*k, i)
-	return len(*k) < oldLen
-}
+func (k *StringSet) Remove(i string) bool { _ = "STUB: not implemented"; return false }
 
 // RemoveAll removes the given elements.
-func (k *StringSet) RemoveAll(is ...string) bool {
-	if len(*k) == 0 {
-		return false
-	}
-
-	oldLen := len(*k)
-	for _, i := range is {
-		delete(*k, i)
-	}
-	return len(*k) < oldLen
-}
+func (k *StringSet) RemoveAll(is ...string) bool { _ = "STUB: not implemented"; return false }
 
 // RemoveMatching removes all elements that match a given predicate.
 func (k *StringSet) RemoveMatching(pred func(string) bool) bool {
-	if len(*k) == 0 {
-		return false
-	}
-
-	oldLen := len(*k)
-	for elem := range *k {
-		if pred(elem) {
-			delete(*k, elem)
-		}
-	}
-	return len(*k) < oldLen
+	_ = "STUB: not implemented"
+	return false
 }
 
 // Contains returns whether the set contains an element of type string.
-func (k StringSet) Contains(i string) bool {
-	_, ok := k[i]
-	return ok
-}
+func (k StringSet) Contains(i string) bool { _ = "STUB: not implemented"; return false }
 
 // Cardinality returns the number of elements in the set.
 func (k StringSet) Cardinality() int {
-	return len(k)
+	_ = "STUB: not implemented"
+
+	// IsEmpty returns whether the underlying set is empty (includes uninitialized).
+	return 0
 }
 
-// IsEmpty returns whether the underlying set is empty (includes uninitialized).
 func (k StringSet) IsEmpty() bool {
-	return len(k) == 0
+	_ = "STUB: not implemented"
+
+	// Clone returns a copy of this set.
+	return false
 }
 
-// Clone returns a copy of this set.
-func (k StringSet) Clone() StringSet {
-	if k == nil {
-		return nil
-	}
-	cloned := make(map[string]struct{}, len(k))
-	for elem := range k {
-		cloned[elem] = struct{}{}
-	}
-	return cloned
-}
+func (k StringSet) Clone() StringSet { _ = "STUB: not implemented"; return *new(StringSet) }
 
 // Difference returns a new set with all elements of k not in other.
 func (k StringSet) Difference(other StringSet) StringSet {
-	if len(k) == 0 || len(other) == 0 {
-		return k.Clone()
-	}
-
-	retained := make(map[string]struct{}, len(k))
-	for elem := range k {
-		if !other.Contains(elem) {
-			retained[elem] = struct{}{}
-		}
-	}
-	return retained
+	_ = "STUB: not implemented"
+	return *new(StringSet)
 }
 
 // Helper function for intersections.
 func (k StringSet) getSmallerLargerAndMaxIntLen(other StringSet) (smaller StringSet, larger StringSet, maxIntLen int) {
-	maxIntLen = len(k)
-	smaller, larger = k, other
-	if l := len(other); l < maxIntLen {
-		maxIntLen = l
-		smaller, larger = larger, smaller
-	}
-	return smaller, larger, maxIntLen
+	_ = "STUB: not implemented"
+	return *new(StringSet), *new(StringSet), 0
 }
 
 // Intersects returns whether the set has a non-empty intersection with the other set.
-func (k StringSet) Intersects(other StringSet) bool {
-	smaller, larger, maxIntLen := k.getSmallerLargerAndMaxIntLen(other)
-	if maxIntLen == 0 {
-		return false
-	}
-	for elem := range smaller {
-		if _, ok := larger[elem]; ok {
-			return true
-		}
-	}
-	return false
-}
+func (k StringSet) Intersects(other StringSet) bool { _ = "STUB: not implemented"; return false }
 
 // Intersect returns a new set with the intersection of the members of both sets.
 func (k StringSet) Intersect(other StringSet) StringSet {
-	smaller, larger, maxIntLen := k.getSmallerLargerAndMaxIntLen(other)
-	if maxIntLen == 0 {
-		return nil
-	}
-
-	retained := make(map[string]struct{}, maxIntLen)
-	for elem := range smaller {
-		if _, ok := larger[elem]; ok {
-			retained[elem] = struct{}{}
-		}
-	}
-	return retained
+	_ = "STUB: not implemented"
+	return *new(StringSet)
 }
 
 // Union returns a new set with the union of the members of both sets.
 func (k StringSet) Union(other StringSet) StringSet {
-	if len(k) == 0 {
-		return other.Clone()
-	} else if len(other) == 0 {
-		return k.Clone()
-	}
-
-	underlying := make(map[string]struct{}, len(k)+len(other))
-	for elem := range k {
-		underlying[elem] = struct{}{}
-	}
-	for elem := range other {
-		underlying[elem] = struct{}{}
-	}
-	return underlying
+	_ = "STUB: not implemented"
+	return *new(StringSet)
 }
 
 // Equal returns a bool if the sets are equal
-func (k StringSet) Equal(other StringSet) bool {
-	thisL, otherL := len(k), len(other)
-	if thisL == 0 && otherL == 0 {
-		return true
-	}
-	if thisL != otherL {
-		return false
-	}
-	for elem := range k {
-		if _, ok := other[elem]; !ok {
-			return false
-		}
-	}
-	return true
-}
+func (k StringSet) Equal(other StringSet) bool { _ = "STUB: not implemented"; return false }
 
 // AsSlice returns a slice of the elements in the set. The order is unspecified.
-func (k StringSet) AsSlice() []string {
-	if len(k) == 0 {
-		return nil
-	}
-	elems := make([]string, 0, len(k))
-	for elem := range k {
-		elems = append(elems, elem)
-	}
-	return elems
-}
+func (k StringSet) AsSlice() []string { _ = "STUB: not implemented"; return nil }
 
 // GetArbitraryElem returns an arbitrary element from the set.
 // This can be useful if, for example, you know the set has exactly one
 // element, and you want to pull it out.
 // If the set is empty, the zero value is returned.
-func (k StringSet) GetArbitraryElem() (arbitraryElem string) {
-	for elem := range k {
-		arbitraryElem = elem
-		break
-	}
-	return arbitraryElem
-}
+func (k StringSet) GetArbitraryElem() (arbitraryElem string) { _ = "STUB: not implemented"; return "" }
 
 // AsSortedSlice returns a slice of the elements in the set, sorted using the passed less function.
 func (k StringSet) AsSortedSlice(less func(i, j string) bool) []string {
-	slice := k.AsSlice()
-	if len(slice) < 2 {
-		return slice
-	}
-	// Since we're generating the code, we might as well use sort.Sort
-	// and avoid paying the reflection penalty of sort.Slice.
-	sortable := &sortableStringSlice{slice: slice, less: less}
-	sort.Sort(sortable)
-	return sortable.slice
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Since we're generating the code, we might as well use sort.Sort
+// and avoid paying the reflection penalty of sort.Slice.
 
 // Clear empties the set
 func (k *StringSet) Clear() {
-	*k = nil
+	_ = "STUB: not implemented"
+
+	// Freeze returns a new, frozen version of the set.
+	return
 }
 
-// Freeze returns a new, frozen version of the set.
 func (k StringSet) Freeze() FrozenStringSet {
-	return NewFrozenStringSetFromMap(k)
+	_ = "STUB: not implemented"
+	return *new(FrozenStringSet)
 }
 
 // ElementsString returns a string representation of all elements, with individual element strings separated by `sep`.
 // The string representation of an individual element is obtained via `fmt.Fprint`.
-func (k StringSet) ElementsString(sep string) string {
-	if len(k) == 0 {
-		return ""
-	}
-	var sb strings.Builder
-	first := true
-	for elem := range k {
-		if !first {
-			sb.WriteString(sep)
-		}
-		fmt.Fprint(&sb, elem)
-		first = false
-	}
-	return sb.String()
-}
+func (k StringSet) ElementsString(sep string) string { _ = "STUB: not implemented"; return "" }
 
 // NewStringSet returns a new thread unsafe set with the given key type.
-func NewStringSet(initial ...string) StringSet {
-	underlying := make(map[string]struct{}, len(initial))
-	for _, elem := range initial {
-		underlying[elem] = struct{}{}
-	}
-	return underlying
-}
+func NewStringSet(initial ...string) StringSet { _ = "STUB: not implemented"; return *new(StringSet) }
 
 type sortableStringSlice struct {
 	slice []string
 	less  func(i, j string) bool
 }
 
-func (s *sortableStringSlice) Len() int {
-	return len(s.slice)
-}
+func (s *sortableStringSlice) Len() int { _ = "STUB: not implemented"; return 0 }
 
-func (s *sortableStringSlice) Less(i, j int) bool {
-	return s.less(s.slice[i], s.slice[j])
-}
+func (s *sortableStringSlice) Less(i, j int) bool { _ = "STUB: not implemented"; return false }
 
-func (s *sortableStringSlice) Swap(i, j int) {
-	s.slice[j], s.slice[i] = s.slice[i], s.slice[j]
-}
+func (s *sortableStringSlice) Swap(i, j int) { _ = "STUB: not implemented"; return }
 
 // A FrozenStringSet is a frozen set of string elements, which
 // cannot be modified after creation. This allows users to use it as if it were
@@ -326,120 +152,62 @@ type FrozenStringSet struct {
 
 // NewFrozenStringSetFromMap returns a new frozen set from the set-style map.
 func NewFrozenStringSetFromMap(m map[string]struct{}) FrozenStringSet {
-	if len(m) == 0 {
-		return FrozenStringSet{}
-	}
-	underlying := make(map[string]struct{}, len(m))
-	for elem := range m {
-		underlying[elem] = struct{}{}
-	}
-	return FrozenStringSet{
-		underlying: underlying,
-	}
+	_ = "STUB: not implemented"
+	return *new(FrozenStringSet)
 }
 
 // NewFrozenStringSet returns a new frozen set with the provided elements.
 func NewFrozenStringSet(elements ...string) FrozenStringSet {
-	underlying := make(map[string]struct{}, len(elements))
-	for _, elem := range elements {
-		underlying[elem] = struct{}{}
-	}
-	return FrozenStringSet{
-		underlying: underlying,
-	}
+	_ = "STUB: not implemented"
+	return *new(FrozenStringSet)
 }
 
 // Contains returns whether the set contains the element.
-func (k FrozenStringSet) Contains(elem string) bool {
-	_, ok := k.underlying[elem]
-	return ok
-}
+func (k FrozenStringSet) Contains(elem string) bool { _ = "STUB: not implemented"; return false }
 
 // Cardinality returns the cardinality of the set.
-func (k FrozenStringSet) Cardinality() int {
-	return len(k.underlying)
-}
+func (k FrozenStringSet) Cardinality() int { _ = "STUB: not implemented"; return 0 }
 
 // IsEmpty returns whether the underlying set is empty (includes uninitialized).
-func (k FrozenStringSet) IsEmpty() bool {
-	return len(k.underlying) == 0
-}
+func (k FrozenStringSet) IsEmpty() bool { _ = "STUB: not implemented"; return false }
 
 // AsSlice returns the elements of the set. The order is unspecified.
-func (k FrozenStringSet) AsSlice() []string {
-	if len(k.underlying) == 0 {
-		return nil
-	}
-	slice := make([]string, 0, len(k.underlying))
-	for elem := range k.underlying {
-		slice = append(slice, elem)
-	}
-	return slice
-}
+func (k FrozenStringSet) AsSlice() []string { _ = "STUB: not implemented"; return nil }
 
 // AsSortedSlice returns the elements of the set as a sorted slice.
 func (k FrozenStringSet) AsSortedSlice(less func(i, j string) bool) []string {
-	slice := k.AsSlice()
-	if len(slice) < 2 {
-		return slice
-	}
-	// Since we're generating the code, we might as well use sort.Sort
-	// and avoid paying the reflection penalty of sort.Slice.
-	sortable := &sortableStringSlice{slice: slice, less: less}
-	sort.Sort(sortable)
-	return sortable.slice
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Since we're generating the code, we might as well use sort.Sort
+// and avoid paying the reflection penalty of sort.Slice.
 
 // ElementsString returns a string representation of all elements, with individual element strings separated by `sep`.
 // The string representation of an individual element is obtained via `fmt.Fprint`.
-func (k FrozenStringSet) ElementsString(sep string) string {
-	if len(k.underlying) == 0 {
-		return ""
-	}
-	var sb strings.Builder
-	first := true
-	for elem := range k.underlying {
-		if !first {
-			sb.WriteString(sep)
-		}
-		fmt.Fprint(&sb, elem)
-		first = false
-	}
-	return sb.String()
-}
+func (k FrozenStringSet) ElementsString(sep string) string { _ = "STUB: not implemented"; return "" }
 
 // The following functions make use of casting `k.underlying` into a mutable Set. This is safe, since we never leak
 // references to these objects, and only invoke mutable set methods that are guaranteed to return a new copy.
 
 // Union returns a frozen set that represents the union between this and other.
 func (k FrozenStringSet) Union(other FrozenStringSet) FrozenStringSet {
-	if len(k.underlying) == 0 {
-		return other
-	}
-	if len(other.underlying) == 0 {
-		return k
-	}
-	return FrozenStringSet{
-		underlying: StringSet(k.underlying).Union(other.underlying),
-	}
+	_ = "STUB: not implemented"
+	return *new(FrozenStringSet)
 }
 
 // Intersect returns a frozen set that represents the intersection between this and other.
 func (k FrozenStringSet) Intersect(other FrozenStringSet) FrozenStringSet {
-	return FrozenStringSet{
-		underlying: StringSet(k.underlying).Intersect(other.underlying),
-	}
+	_ = "STUB: not implemented"
+	return *new(FrozenStringSet)
 }
 
 // Difference returns a frozen set that represents the set difference between this and other.
 func (k FrozenStringSet) Difference(other FrozenStringSet) FrozenStringSet {
-	return FrozenStringSet{
-		underlying: StringSet(k.underlying).Difference(other.underlying),
-	}
+	_ = "STUB: not implemented"
+	return *new(FrozenStringSet)
 }
 
 // Unfreeze returns a mutable set with the same contents as this frozen set. This set will not be affected by any
 // subsequent modifications to the returned set.
-func (k FrozenStringSet) Unfreeze() StringSet {
-	return StringSet(k.underlying).Clone()
-}
+func (k FrozenStringSet) Unfreeze() StringSet { _ = "STUB: not implemented"; return *new(StringSet) }

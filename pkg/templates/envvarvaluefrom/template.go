@@ -1,11 +1,8 @@
 package envvarvaluefrom
 
 import (
-	"fmt"
-	"maps"
 	"regexp"
 
-	"github.com/pkg/errors"
 	"golang.stackrox.io/kube-linter/pkg/check"
 	"golang.stackrox.io/kube-linter/pkg/config"
 	"golang.stackrox.io/kube-linter/pkg/diagnostic"
@@ -13,7 +10,6 @@ import (
 	"golang.stackrox.io/kube-linter/pkg/objectkinds"
 	"golang.stackrox.io/kube-linter/pkg/templates"
 	"golang.stackrox.io/kube-linter/pkg/templates/envvarvaluefrom/internal/params"
-	"golang.stackrox.io/kube-linter/pkg/templates/util"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -78,157 +74,27 @@ func init() {
 }
 
 func lintForEachContainer(lintCtx lintcontext.LintContext, object lintcontext.Object, ignoredSecrets, ignoredConfigMaps []*regexp.Regexp, secrets map[string]*v1.Secret, configmaps map[string]*v1.ConfigMap) []diagnostic.Diagnostic {
-	return util.PerContainerCheck(func(container *v1.Container) []diagnostic.Diagnostic {
-		var results []diagnostic.Diagnostic
-		var envRefs []struct {
-			info resourceInfo
-			typ  resourceType
-		}
-
-		for _, envVar := range container.Env {
-			valueFrom := envVar.ValueFrom
-			if valueFrom == nil {
-				continue
-			}
-
-			if secretRef := valueFrom.SecretKeyRef; secretRef != nil {
-				envRefs = append(envRefs, struct {
-					info resourceInfo
-					typ  resourceType
-				}{
-					info: resourceInfo{
-						name:     secretRef.Name,
-						key:      secretRef.Key,
-						optional: secretRef.Optional,
-					},
-					typ: resourceTypeSecret,
-				})
-			}
-
-			if configMapRef := valueFrom.ConfigMapKeyRef; configMapRef != nil {
-				envRefs = append(envRefs, struct {
-					info resourceInfo
-					typ  resourceType
-				}{
-					info: resourceInfo{
-						name:     configMapRef.Name,
-						key:      configMapRef.Key,
-						optional: configMapRef.Optional,
-					},
-					typ: resourceTypeConfigMap,
-				})
-			}
-		}
-
-		secretChecker := &resourceChecker{
-			objType:      "secret",
-			objMap:       make(map[string]interface{}),
-			getKeys:      getSecretKeys,
-			ignoredRegex: ignoredSecrets,
-		}
-		for k, v := range secrets {
-			secretChecker.objMap[k] = v
-		}
-
-		configMapChecker := &resourceChecker{
-			objType:      "config map",
-			objMap:       make(map[string]interface{}),
-			getKeys:      getConfigMapKeys,
-			ignoredRegex: ignoredConfigMaps,
-		}
-		for k, v := range configmaps {
-			configMapChecker.objMap[k] = v
-		}
-
-		for _, envRef := range envRefs {
-			var checker *resourceChecker
-			switch envRef.typ {
-			case resourceTypeSecret:
-				checker = secretChecker
-			case resourceTypeConfigMap:
-				checker = configMapChecker
-			}
-
-			if msg := checkResourceReference(container.Name, envRef.info, checker); msg != "" {
-				results = append(results, diagnostic.Diagnostic{Message: msg})
-			}
-		}
-		return results
-	})(lintCtx, object)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func checkResourceReference(containerName string, ref resourceInfo, checker *resourceChecker) string {
-	if ref.optional != nil && *ref.optional {
-		return ""
-	}
-
-	if isInRegexList(checker.ignoredRegex, ref.name) {
-		return ""
-	}
-
-	obj, ok := checker.objMap[ref.name]
-	if !ok {
-		return fmt.Sprintf("The container %q is referring to an unknown %s %q", containerName, checker.objType, ref.name)
-	}
-
-	keys := checker.getKeys(obj)
-	if !isInList(keys, ref.key) {
-		return fmt.Sprintf("The container %q is referring to an unknown key %q in %s %q", containerName, ref.key, checker.objType, ref.name)
-	}
-
+	_ = "STUB: not implemented"
 	return ""
 }
 
 func isInRegexList(regexlist []*regexp.Regexp, name string) bool {
-	for _, regex := range regexlist {
-		if regex.MatchString(name) {
-			return true
-		}
-	}
+	_ = "STUB: not implemented"
 	return false
 }
 
-func isInList(regexlist []string, name string) bool {
-	for _, regex := range regexlist {
-		if name == regex {
-			return true
-		}
-	}
-	return false
-}
+func isInList(regexlist []string, name string) bool { _ = "STUB: not implemented"; return false }
 
-func getSecretKeys(obj interface{}) []string {
-	secret := obj.(*v1.Secret)
-	var keys []string
-	for key := range maps.Keys(secret.Data) {
-		keys = append(keys, key)
-	}
-	for key := range maps.Keys(secret.StringData) {
-		keys = append(keys, key)
-	}
-	return keys
-}
+func getSecretKeys(obj interface{}) []string { _ = "STUB: not implemented"; return nil }
 
-func getConfigMapKeys(obj interface{}) []string {
-	configmap := obj.(*v1.ConfigMap)
-	var keys []string
-	for key := range maps.Keys(configmap.Data) {
-		keys = append(keys, key)
-	}
-	for key := range maps.Keys(configmap.BinaryData) {
-		keys = append(keys, key)
-	}
-	return keys
-}
+func getConfigMapKeys(obj interface{}) []string { _ = "STUB: not implemented"; return nil }
 
 func extractRegexList(inputList []string) ([]*regexp.Regexp, error) {
-	result := make([]*regexp.Regexp, 0, len(inputList))
-	for _, res := range inputList {
-		rg, err := regexp.Compile(res)
-		if err != nil {
-			return nil, errors.Wrapf(err, "invalid regex %s", res)
-		}
-		result = append(result, rg)
-	}
-	return result, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

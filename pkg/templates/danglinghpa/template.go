@@ -11,10 +11,6 @@ import (
 	"golang.stackrox.io/kube-linter/pkg/objectkinds"
 	"golang.stackrox.io/kube-linter/pkg/templates"
 	"golang.stackrox.io/kube-linter/pkg/templates/danglinghpa/internal/params"
-	autoscalingV1 "k8s.io/api/autoscaling/v1"
-	autoscalingV2 "k8s.io/api/autoscaling/v2"
-	autoscalingV2Beta1 "k8s.io/api/autoscaling/v2beta1"
-	autoscalingV2Beta2 "k8s.io/api/autoscaling/v2beta2"
 )
 
 const (
@@ -28,38 +24,8 @@ type objectReference struct {
 }
 
 func getTargetFromHpa(obj lintcontext.Object) (*objectReference, bool) {
-	switch hpa := obj.K8sObject.(type) {
-	case *autoscalingV1.HorizontalPodAutoscaler:
-		target := hpa.Spec.ScaleTargetRef
-		return &objectReference{
-			Kind:       target.Kind,
-			Name:       target.Name,
-			APIVersion: target.APIVersion,
-		}, true
-	case *autoscalingV2Beta1.HorizontalPodAutoscaler:
-		target := hpa.Spec.ScaleTargetRef
-		return &objectReference{
-			Kind:       target.Kind,
-			Name:       target.Name,
-			APIVersion: target.APIVersion,
-		}, true
-	case *autoscalingV2Beta2.HorizontalPodAutoscaler:
-		target := hpa.Spec.ScaleTargetRef
-		return &objectReference{
-			Kind:       target.Kind,
-			Name:       target.Name,
-			APIVersion: target.APIVersion,
-		}, true
-	case *autoscalingV2.HorizontalPodAutoscaler:
-		target := hpa.Spec.ScaleTargetRef
-		return &objectReference{
-			Kind:       target.Kind,
-			Name:       target.Name,
-			APIVersion: target.APIVersion,
-		}, true
-	default:
-		return nil, false
-	}
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func init() {

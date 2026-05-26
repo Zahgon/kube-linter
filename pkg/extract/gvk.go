@@ -7,5 +7,6 @@ import (
 
 // GVK extracts the GroupVersionKind of an object.
 func GVK(object k8sutil.Object) schema.GroupVersionKind {
-	return object.GetObjectKind().GroupVersionKind()
+	_ = "STUB: not implemented"
+	return *new(schema.GroupVersionKind)
 }

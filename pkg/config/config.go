@@ -1,12 +1,6 @@
 package config
 
 import (
-	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
-
-	"github.com/go-viper/mapstructure/v2"
 	"github.com/spf13/viper"
 )
 
@@ -42,43 +36,10 @@ type Config struct {
 var defaultConfigFilenames = [...]string{".kube-linter.yaml", ".kube-linter.yml"}
 
 // Get info on config file if it exists
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if err != nil {
-		return false
-	}
-	return !info.IsDir()
-}
+func fileExists(filename string) bool { _ = "STUB: not implemented"; return false }
 
 // Load loads the config from the given path.
 func Load(v *viper.Viper, configPath string) (Config, error) {
-	if configPath == "" {
-		for _, p := range defaultConfigFilenames {
-			if fileExists(p) {
-				configPath = p
-				break
-			}
-		}
-	}
-
-	if configPath != "" {
-		filename := filepath.Base(configPath)
-		ext := filepath.Ext(configPath)
-		path := filepath.Dir(configPath)
-
-		v.SetConfigName(strings.TrimSuffix(filename, ext))
-		v.AddConfigPath(path)
-		if err := v.ReadInConfig(); err != nil {
-			return Config{}, fmt.Errorf("reading file: %w", err)
-		}
-	}
-
-	var conf Config
-	err := v.Unmarshal(&conf, func(config *mapstructure.DecoderConfig) {
-		config.TagName = "json"
-	})
-	if err != nil {
-		return Config{}, fmt.Errorf("unmarshalling config File: %w", err)
-	}
-	return conf, nil
+	_ = "STUB: not implemented"
+	return *new(Config), nil
 }

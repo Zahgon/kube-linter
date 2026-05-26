@@ -3,8 +3,6 @@ package updateconfig
 import (
 	"fmt"
 	"regexp"
-	"strconv"
-	"strings"
 
 	"golang.stackrox.io/kube-linter/internal/errorhelpers"
 	"golang.stackrox.io/kube-linter/internal/stringutils"
@@ -25,91 +23,25 @@ const (
 )
 
 func parseIntOrString(data string) (*intstr.IntOrString, error) {
-	val, err := strconv.Atoi(data)
-	if err != nil {
-		// This is not an integer.  Is it a valid string?
-		if !strings.HasSuffix(data, "%") {
-			return nil, fmt.Errorf("%s is not a valid string.  It does not end with %s", data, "%")
-		}
-		strLen := len(data)
-		intVal := data[:strLen-1]
-		val, err = strconv.Atoi(intVal)
-		if err != nil {
-			// Not going to try harder
-			return nil, fmt.Errorf("unable to parse %s", data)
-		}
-		if val > 100 || val < 0 {
-			return nil, fmt.Errorf("%s isn't a valid percent", data)
-		}
-	} else if val < 0 {
-		return nil, fmt.Errorf("%d isn't a valid value", val)
-	}
-	converted := intstr.Parse(data)
-	return &converted, nil
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// This is not an integer.  Is it a valid string?
+
+// Not going to try harder
+
 func compareIntOrString(maximal, minimal, actual *intstr.IntOrString) bool {
-	if maximal == nil && minimal == nil {
-		return true
-	}
-	if actual == nil {
-		return false
-	}
-	actualVal, err := intstr.GetValueFromIntOrPercent(actual, 100, false)
-	if err != nil {
-		return false
-	}
-	actualIsPercent := strings.Contains(actual.String(), "%")
-	if maximal != nil {
-		maxIsPercent := strings.Contains(maximal.String(), "%")
-		if actualIsPercent != maxIsPercent {
-			return false
-		}
-		maxVal, err := intstr.GetValueFromIntOrPercent(maximal, 100, false)
-		if err != nil {
-			return false
-		}
-		if actualVal > maxVal {
-			return false
-		}
-	}
-	if minimal != nil {
-		minIsPercent := strings.Contains(minimal.String(), "%")
-		if actualIsPercent != minIsPercent {
-			return false
-		}
-		minVal, err := intstr.GetValueFromIntOrPercent(minimal, 100, false)
-		if err != nil {
-			return false
-		}
-		if actualVal < minVal {
-			return false
-		}
-	}
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
 func conditional(firstCond bool, firstStr string, secondCond bool, secondStr, bothStr string) string {
-	msg := ""
-	if firstCond {
-		msg = firstStr
-	}
-	if firstCond && secondCond {
-		msg += bothStr
-	}
-	if secondCond {
-		msg += secondStr
-	}
-	return msg
-
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func needsRollingUpdateDefinition(p params.Params) bool {
-	isRolling, _ := regexp.MatchString("Rolling", p.StrategyTypeRegex)
-	return isRolling && (p.MinPodsUnavailable != "" || p.MaxPodsUnavailable != "" ||
-		p.MinSurge != "" || p.MaxSurge != "")
-}
+func needsRollingUpdateDefinition(p params.Params) bool { _ = "STUB: not implemented"; return false }
 
 func init() {
 	templates.Register(check.Template{

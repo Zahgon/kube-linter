@@ -1,21 +1,13 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
-	"reflect"
-	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
 	"golang.stackrox.io/kube-linter/internal/set"
-	"golang.stackrox.io/kube-linter/internal/stringutils"
-	"golang.stackrox.io/kube-linter/internal/utils"
 	"golang.stackrox.io/kube-linter/pkg/check"
-	"k8s.io/gengo/parser"
 	"k8s.io/gengo/types"
 )
 
@@ -155,190 +147,38 @@ var (
 	}).Parse(fileTemplateStr))
 )
 
-func lowerCaseFirstLetter(s string) string {
-	return strings.ToLower(s[:1]) + s[1:]
-}
+func lowerCaseFirstLetter(s string) string { _ = "STUB: not implemented"; return "" }
 
-func getName(member types.Member) string {
-	if jsonTag := reflect.StructTag(member.Tags).Get("json"); jsonTag != "" {
-		name, _ := stringutils.Split2(jsonTag, ",")
-		if name != "" {
-			return name
-		}
-	}
-	return lowerCaseFirstLetter(member.Name)
-}
+func getName(member types.Member) string { _ = "STUB: not implemented"; return "" }
 
-func getDescription(member types.Member) string {
-	firstCommentLineWithMetadata := len(member.CommentLines)
-	for i, commentLine := range member.CommentLines {
-		if strings.HasPrefix(commentLine, metadataMarker) {
-			firstCommentLineWithMetadata = i
-			break
-		}
-	}
-	return strings.Join(member.CommentLines[:firstCommentLineWithMetadata], " ")
-}
+func getDescription(member types.Member) string { _ = "STUB: not implemented"; return "" }
 
 func setBoolBasedOnPresenceOfTag(valToSet *bool, tag string, extractedTags map[string][]string) error {
-	if val, exists := extractedTags[tag]; exists {
-		if len(val) > 1 || (len(val) == 0 && val[0] != "") {
-			return fmt.Errorf("invalid value for tag %s: %v; tag is only supported WITHOUT values", tag, val)
-		}
-		*valToSet = true
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func constructParameterDescsFromStruct(typeSpec *types.Type) ([]check.ParameterDesc, error) {
-	var paramDescs []check.ParameterDesc
-	for _, member := range typeSpec.Members {
-		if member.Embedded {
-			return nil, fmt.Errorf("cannot handle embedded member %s in %+v", member.Name, typeSpec)
-		}
-
-		desc := check.ParameterDesc{
-			Name:               getName(member),
-			Description:        getDescription(member),
-			XXXStructFieldName: member.Name,
-		}
-		relevantTyp := member.Type
-		if relevantTyp.Kind == types.Pointer {
-			desc.XXXIsPointer = true
-			relevantTyp = relevantTyp.Elem
-		}
-		switch kind := relevantTyp.Kind; kind {
-		case types.Builtin:
-			checkType, err := getCheckTypeFromParsedBuiltinType(relevantTyp)
-			if err != nil {
-				return nil, fmt.Errorf("handling field %v: %w", member.Name, err)
-			}
-			desc.Type = checkType
-		case types.Slice:
-			desc.Type = check.ArrayType
-			// For now we only support array of builtin types. No array of objects or array of arrays.
-			elemType, err := getCheckTypeFromParsedBuiltinType(member.Type.Elem)
-			if err != nil {
-				return nil, fmt.Errorf("handling array elem type %v: %w", member.Type.Elem, err)
-			}
-			desc.ArrayElemType = elemType
-		case types.Struct:
-			desc.Type = check.ObjectType
-			subParams, err := constructParameterDescsFromStruct(member.Type)
-			if err != nil {
-				return nil, fmt.Errorf("handling field %v: %w", member.Name, err)
-			}
-			desc.SubParameters = subParams
-		default:
-			return nil, fmt.Errorf("currently unsupported type %v", member.Type)
-		}
-
-		extractedTags := types.ExtractCommentTags(metadataMarker, member.CommentLines)
-		desc.Examples = extractedTags["example"]
-		desc.Enum = extractedTags["enum"]
-		if err := setBoolBasedOnPresenceOfTag(&desc.Required, "required", extractedTags); err != nil {
-			return nil, err
-		}
-		if err := setBoolBasedOnPresenceOfTag(&desc.NoRegex, "noregex", extractedTags); err != nil {
-			return nil, err
-		}
-		if err := setBoolBasedOnPresenceOfTag(&desc.NotNegatable, "notnegatable", extractedTags); err != nil {
-			return nil, err
-		}
-		paramDescs = append(paramDescs, desc)
-	}
-	return paramDescs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// For now we only support array of builtin types. No array of objects or array of arrays.
+
 func getCheckTypeFromParsedBuiltinType(typeSpec *types.Type) (check.ParameterType, error) {
-	switch typeSpec {
-	case types.String:
-		return check.StringType, nil
-	case types.Int:
-		return check.IntegerType, nil
-	case types.Float32, types.Float64:
-		return check.NumberType, nil
-	case types.Bool:
-		return check.BooleanType, nil
-	default:
-		return "", fmt.Errorf("currently unsupported type %v", typeSpec)
-	}
+	_ = "STUB: not implemented"
+	return *new(check.ParameterType), nil
 }
 
 func processTemplate(dir string) error {
-	b := parser.New()
+	_ = "STUB: not implemented"
+
 	// This avoids parsing generated files in the package (since we add +build !templatecodegen to them,
 	// which makes the parsing much quicker since the parser doesn't have to load any imported packages).
-	b.AddBuildTags("templatecodegen")
-	if err := b.AddDir(fmt.Sprintf("./%s/internal/params", dir)); err != nil {
-		return err
-	}
-	typeUniverse, err := b.FindTypes()
-	if err != nil {
-		return err
-	}
-	pkgNames := b.FindPackages()
-	if len(pkgNames) != 1 {
-		return fmt.Errorf("found unexpected number of packages in %+v: %d", pkgNames, len(pkgNames))
-	}
-
-	pkg := typeUniverse.Package(pkgNames[0])
-	paramsType := pkg.Type(paramsStructName)
-
-	if paramsType.Kind != types.Struct {
-		return fmt.Errorf("unexpected param type: %+v", paramsType)
-	}
-	paramDescs, err := constructParameterDescsFromStruct(paramsType)
-	if err != nil {
-		return err
-	}
-
-	var templateObj []templateElem
-
-	for _, paramDesc := range paramDescs {
-		buf := bytes.NewBuffer(nil)
-		enc := json.NewEncoder(buf)
-		enc.SetIndent("", "\t")
-		if err := enc.Encode(paramDesc); err != nil {
-			return fmt.Errorf("couldn't marshal param %v: %w", paramDesc, err)
-		}
-
-		templateObj = append(templateObj, templateElem{
-			ParamDesc: paramDesc,
-			ParamJSON: buf.String(),
-		})
-	}
-
-	outFileName := filepath.Join(dir, "internal", "params", "gen-params.go")
-	outF, err := os.Create(filepath.Clean(outFileName))
-	if err != nil {
-		return fmt.Errorf("creating output file: %w", err)
-	}
-	defer utils.IgnoreError(outF.Close)
-	if err := fileTemplate.Execute(outF, templateObj); err != nil {
-		return err
-	}
 	return nil
 }
 
-func mainCmd() error {
-	fileInfos, err := os.ReadDir(".")
-	if err != nil {
-		return err
-	}
-	for _, fileInfo := range fileInfos {
-		if !fileInfo.IsDir() {
-			continue
-		}
-		if knownNonTemplateDirs.Contains(fileInfo.Name()) {
-			continue
-		}
-		if err := processTemplate(fileInfo.Name()); err != nil {
-			return fmt.Errorf("processing dir %v: %w", fileInfo.Name(), err)
-		}
-	}
-	return nil
-}
+func mainCmd() error { _ = "STUB: not implemented"; return nil }
 
 func main() {
 	if err := mainCmd(); err != nil {

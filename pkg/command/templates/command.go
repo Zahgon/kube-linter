@@ -1,12 +1,8 @@
 package templates
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
-	"golang.stackrox.io/kube-linter/internal/flagutil"
 	"golang.stackrox.io/kube-linter/pkg/command/common"
-	"golang.stackrox.io/kube-linter/pkg/templates"
 )
 
 const (
@@ -66,31 +62,7 @@ var (
 	}
 )
 
-func listCommand() *cobra.Command {
-	format := flagutil.NewEnumFlag("Output format", formatters.GetEnabledFormatters(), common.PlainFormat)
-	c := &cobra.Command{
-		Use:   "list",
-		Short: "List check templates",
-		Args:  cobra.NoArgs,
-		RunE: func(cmd *cobra.Command, _ []string) error {
-			knownTemplates := templates.List()
-			formatFunc, err := formatters.FormatterByType(format.String())
-			if err != nil {
-				return err
-			}
-			return formatFunc(os.Stdout, knownTemplates)
-		},
-	}
-	c.Flags().Var(format, "format", format.Usage())
-	return c
-}
+func listCommand() *cobra.Command { _ = "STUB: not implemented"; return nil }
 
 // Command defines the root of the templates command.
-func Command() *cobra.Command {
-	c := &cobra.Command{
-		Use:   "templates",
-		Short: "View more information on check templates",
-	}
-	c.AddCommand(listCommand())
-	return c
-}
+func Command() *cobra.Command { _ = "STUB: not implemented"; return nil }

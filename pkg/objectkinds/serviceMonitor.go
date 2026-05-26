@@ -21,6 +21,4 @@ func init() {
 }
 
 // GetServiceMonitorAPIVersion returns servicemonitor's apiversion
-func GetServiceMonitorAPIVersion() string {
-	return serviceMonitorGVK.GroupVersion().String()
-}
+func GetServiceMonitorAPIVersion() string { _ = "STUB: not implemented"; return "" }

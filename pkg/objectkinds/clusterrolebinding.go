@@ -21,6 +21,4 @@ func init() {
 }
 
 // GetClusterRoleBindingAPIVersion returns ClusterRoleBinding's APIVersion
-func GetClusterRoleBindingAPIVersion() string {
-	return clusterRoleBindingGVK.GroupVersion().String()
-}
+func GetClusterRoleBindingAPIVersion() string { _ = "STUB: not implemented"; return "" }

@@ -3,7 +3,6 @@ package lintcontext
 import (
 	"encoding/json"
 
-	"golang.stackrox.io/kube-linter/internal/stringutils"
 	"golang.stackrox.io/kube-linter/pkg/k8sutil"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -29,33 +28,21 @@ type K8sObjectInfo struct {
 
 // GetK8sObjectName extracts K8sObjectInfo from Object.K8sObject.
 func (o *Object) GetK8sObjectName() K8sObjectInfo {
-	return K8sObjectInfo{
-		Namespace:        o.K8sObject.GetNamespace(),
-		Name:             o.K8sObject.GetName(),
-		GroupVersionKind: o.K8sObject.GetObjectKind().GroupVersionKind(),
-	}
+	_ = "STUB: not implemented"
+	return *new(K8sObjectInfo)
 }
 
 // String provides plain-text representation of k8s object name.
-func (n K8sObjectInfo) String() string {
-	ns := stringutils.OrDefault(n.Namespace, "<no namespace>")
-	return ns + "/" + n.Name + " " + n.GroupVersionKind.String()
-}
+func (n K8sObjectInfo) String() string { _ = "STUB: not implemented"; return "" }
 
 // MarshalJSON provides custom serialization for Object.
 // Object.K8sObject is not serialized directly because that would be too much data. This function limits output to only
 // K8sObjectInfo returned for K8sObject.
 func (o *Object) MarshalJSON() ([]byte, error) {
+	_ = "STUB: not implemented"
 	// AliasedObject allows including all Object data without running MarshalJSON (this same function) on it in
 	// an infinite loop.
-	type AliasedObject Object
-	return json.Marshal(&struct {
-		*AliasedObject
-		K8sObject K8sObjectInfo
-	}{
-		AliasedObject: (*AliasedObject)(o),
-		K8sObject:     o.GetK8sObjectName(),
-	})
+	return nil, nil
 }
 
 // Check that *Object implements json.Marshaler interface.
@@ -82,27 +69,22 @@ type lintContextImpl struct {
 
 // Objects returns the (valid) objects loaded from this LintContext.
 func (l *lintContextImpl) Objects() []Object {
-	return l.objects
+	_ = "STUB: not implemented"
+
+	// addObject adds a valid object to this LintContext
+	return nil
 }
 
-// addObject adds a valid object to this LintContext
-func (l *lintContextImpl) addObjects(objs ...Object) {
-	l.objects = append(l.objects, objs...)
-}
+func (l *lintContextImpl) addObjects(objs ...Object) { _ = "STUB: not implemented"; return }
 
 // InvalidObjects returns any objects that we attempted to load, but which were invalid.
-func (l *lintContextImpl) InvalidObjects() []InvalidObject {
-	return l.invalidObjects
-}
+func (l *lintContextImpl) InvalidObjects() []InvalidObject { _ = "STUB: not implemented"; return nil }
 
 // addInvalidObject adds an invalid object to this LintContext
 func (l *lintContextImpl) addInvalidObjects(objs ...InvalidObject) {
-	l.invalidObjects = append(l.invalidObjects, objs...)
+	_ = "STUB: not implemented"
+	return
 }
 
 // new returns a ready-to-use, empty, lintContextImpl.
-func newCtx(options Options) *lintContextImpl {
-	return &lintContextImpl{
-		customDecoder: options.CustomDecoder,
-	}
-}
+func newCtx(options Options) *lintContextImpl { _ = "STUB: not implemented"; return nil }

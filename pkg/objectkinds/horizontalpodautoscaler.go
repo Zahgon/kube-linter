@@ -1,8 +1,6 @@
 package objectkinds
 
 import (
-	"fmt"
-
 	autoscalingV1 "k8s.io/api/autoscaling/v1"
 	autoscalingV2 "k8s.io/api/autoscaling/v2"
 	autoscalingV2Beta1 "k8s.io/api/autoscaling/v2beta1"
@@ -23,10 +21,8 @@ var (
 )
 
 func isHorizontalPodAutoscaler(gvk schema.GroupVersionKind) bool {
-	return gvk == horizontalPodAutoscalerV1GVK ||
-		gvk == horizontalPodAutoscalerV2GVK ||
-		gvk == horizontalPodAutoscalerV2Beta1GVK ||
-		gvk == horizontalPodAutoscalerV2Beta2GVK
+	_ = "STUB: not implemented"
+	return false
 }
 
 func init() {
@@ -35,5 +31,6 @@ func init() {
 
 // GetHorizontalPodAutoscalerAPIVersion returns HorizontalPodAutoscaler's APIVersion
 func GetHorizontalPodAutoscalerAPIVersion(version string) string {
-	return fmt.Sprintf("%s/%s", horizontalPodAutoscalerV2Beta1GVK.Group, version)
+	_ = "STUB: not implemented"
+	return ""
 }

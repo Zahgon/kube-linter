@@ -1,12 +1,9 @@
 package danglingnetworkpolicypeer
 
 import (
-	"fmt"
-
 	"golang.stackrox.io/kube-linter/pkg/check"
 	"golang.stackrox.io/kube-linter/pkg/config"
 	"golang.stackrox.io/kube-linter/pkg/diagnostic"
-	"golang.stackrox.io/kube-linter/pkg/extract"
 	"golang.stackrox.io/kube-linter/pkg/lintcontext"
 	"golang.stackrox.io/kube-linter/pkg/objectkinds"
 	"golang.stackrox.io/kube-linter/pkg/templates"
@@ -14,7 +11,6 @@ import (
 
 	v1 "k8s.io/api/networking/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/labels"
 )
 
 const (
@@ -63,34 +59,15 @@ func init() {
 }
 
 func getAndCheckifPodSelectorMatchesPods(peer v1.NetworkPolicyPeer, lintCtx lintcontext.LintContext, currNamespace string) []diagnostic.Diagnostic {
-	podSelector := peer.PodSelector
-	if podSelector == nil {
-		return nil
-	}
-	nsSelector := peer.NamespaceSelector
-	if nsSelector != nil {
-		return nil // For now, we assume all pods with namespace selectors are okay
-	}
-	return findMatchingPods(podSelector, lintCtx, currNamespace)
+	_ = "STUB: not implemented"
+	return nil
 }
 
+// For now, we assume all pods with namespace selectors are okay
+
 func findMatchingPods(podSelector *metaV1.LabelSelector, lintCtx lintcontext.LintContext, currNamespace string) []diagnostic.Diagnostic {
-	labelSelector, err := metaV1.LabelSelectorAsSelector(&metaV1.LabelSelector{MatchLabels: podSelector.MatchLabels,
-		MatchExpressions: podSelector.MatchExpressions})
-	if err != nil {
-		return []diagnostic.Diagnostic{{Message: fmt.Sprintf("networkpolicy ingress rule has invalid podSelector: %v", err)}}
-	}
-	for _, obj := range lintCtx.Objects() {
-		podTemplateSpec, hasPods := extract.PodTemplateSpec(obj.K8sObject)
-		if !hasPods {
-			continue
-		}
-		if currNamespace != obj.K8sObject.GetNamespace() {
-			continue
-		}
-		if labelSelector.Matches(labels.Set(podTemplateSpec.Labels)) {
-			return nil // found
-		}
-	}
-	return []diagnostic.Diagnostic{{Message: fmt.Sprintf("no pods found matching networkpolicy rule's podSelector labels (%v)", labelSelector)}}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// found

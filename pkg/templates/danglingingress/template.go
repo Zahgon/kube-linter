@@ -25,48 +25,13 @@ type serviceDescriptor struct {
 }
 
 func getSelectorsFromIngressBackend(b *networkingV1.IngressBackend) (serviceDescriptor, bool) {
-	service := b.Service
-	if service == nil {
-		return serviceDescriptor{}, false
-	}
-
-	var port intstr.IntOrString
-	if service.Port.Name != "" {
-		port = intstr.FromString(service.Port.Name)
-	} else {
-		port = intstr.FromInt(int(service.Port.Number))
-	}
-
-	return serviceDescriptor{
-		name: service.Name,
-		port: port,
-	}, true
+	_ = "STUB: not implemented"
+	return *new(serviceDescriptor), false
 }
 
 func getSelectorsFromIngress(ingress *networkingV1.Ingress) map[serviceDescriptor]struct{} {
-	selectors := map[serviceDescriptor]struct{}{}
-
-	if defaultBack := ingress.Spec.DefaultBackend; defaultBack != nil {
-		if s, found := getSelectorsFromIngressBackend(defaultBack); found {
-			selectors[s] = struct{}{}
-		}
-	}
-
-	for _, r := range ingress.Spec.Rules {
-		spec := r.HTTP
-		if spec == nil {
-			continue
-		}
-
-		for _, p := range spec.Paths {
-			p := p
-			if s, found := getSelectorsFromIngressBackend(&p.Backend); found {
-				selectors[s] = struct{}{}
-			}
-		}
-	}
-
-	return selectors
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func init() {

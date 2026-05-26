@@ -1,9 +1,7 @@
 package lint
 
 import (
-	"fmt"
 	"io"
-	"os"
 )
 
 // OutputDestination represents where formatted output should be written
@@ -14,27 +12,16 @@ type OutputDestination struct {
 
 // NewOutputDestination creates an output destination
 func NewOutputDestination(path string) (*OutputDestination, error) {
-	if path == "" {
-		return &OutputDestination{
-			Writer: nopWriteCloser{os.Stdout},
-			Path:   "",
-		}, nil
-	}
-
-	file, err := os.Create(path) // #nosec G304 -- User-specified output file path
-	if err != nil {
-		return nil, fmt.Errorf("failed to create output file %q: %w", path, err)
-	}
-
-	return &OutputDestination{Writer: file, Path: path}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// #nosec G304 -- User-specified output file path
 
 // Close closes the output destination
-func (d *OutputDestination) Close() error {
-	return d.Writer.Close()
-}
+func (d *OutputDestination) Close() error { _ = "STUB: not implemented"; return nil }
 
 // nopWriteCloser wraps an io.Writer and provides a no-op Close method
 type nopWriteCloser struct{ io.Writer }
 
-func (nopWriteCloser) Close() error { return nil }
+func (nopWriteCloser) Close() error { _ = "STUB: not implemented"; return nil }

@@ -16,12 +16,5 @@ limitations under the License.
 
 package v1alpha1
 
-import (
-	"fmt"
-	"strings"
-)
-
 // GenerateIdentifier returns identifier for the object in form "kind.namespace.name" (lowercase)
-func GenerateIdentifier(kind, namespace, name string) string {
-	return strings.ToLower(fmt.Sprintf("%s.%s.%s", kind, namespace, name))
-}
+func GenerateIdentifier(kind, namespace, name string) string { _ = "STUB: not implemented"; return "" }

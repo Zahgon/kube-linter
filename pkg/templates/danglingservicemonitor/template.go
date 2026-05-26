@@ -76,13 +76,6 @@ func init() {
 }
 
 func checkNamespaceSelector(namespaceSelector k8sMonitoring.NamespaceSelector, service *v1.Service) bool {
-	if namespaceSelector.Any {
-		return true
-	}
-	for _, ns := range namespaceSelector.MatchNames {
-		if ns == service.Namespace {
-			return true
-		}
-	}
+	_ = "STUB: not implemented"
 	return false
 }

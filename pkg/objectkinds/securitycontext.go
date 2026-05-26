@@ -21,6 +21,4 @@ func init() {
 }
 
 // GetSCCAPIVersion returns SCC's apiversion
-func GetSCCAPIVersion() string {
-	return sccGVK.GroupVersion().String()
-}
+func GetSCCAPIVersion() string { _ = "STUB: not implemented"; return "" }

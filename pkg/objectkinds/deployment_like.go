@@ -29,10 +29,7 @@ var (
 	}()
 )
 
-func IsDeploymentLike(gvk schema.GroupVersionKind) bool {
-	_, ok := deploymentLikeGroupKinds[gvk.GroupKind()]
-	return ok
-}
+func IsDeploymentLike(gvk schema.GroupVersionKind) bool { _ = "STUB: not implemented"; return false }
 
 const (
 	// DeploymentLike is the name of the DeploymentLike ObjectKind.

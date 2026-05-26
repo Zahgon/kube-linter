@@ -1,8 +1,6 @@
 package cpurequirements
 
 import (
-	"fmt"
-
 	"golang.stackrox.io/kube-linter/pkg/check"
 	"golang.stackrox.io/kube-linter/pkg/config"
 	"golang.stackrox.io/kube-linter/pkg/diagnostic"
@@ -15,12 +13,8 @@ import (
 )
 
 func process(results *[]diagnostic.Diagnostic, containerName, requirementsType string, quantity *resource.Quantity, lowerBound int, upperBound *int) {
-	if util.ValueInRange(int(quantity.MilliValue()), lowerBound, upperBound) {
-		*results = append(*results, diagnostic.Diagnostic{
-			Message: fmt.Sprintf("container %q has cpu %s %s", containerName, requirementsType, quantity),
-		})
-	}
-
+	_ = "STUB: not implemented"
+	return
 }
 
 func init() {

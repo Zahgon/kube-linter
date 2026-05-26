@@ -13,5 +13,6 @@ type Matcher interface {
 type MatcherFunc func(gvk schema.GroupVersionKind) bool
 
 func (f MatcherFunc) Matches(gvk schema.GroupVersionKind) bool {
-	return f(gvk)
+	_ = "STUB: not implemented"
+	return false
 }

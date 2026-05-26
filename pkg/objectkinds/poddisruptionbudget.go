@@ -21,6 +21,4 @@ func init() {
 }
 
 // GetPodDisruptionBudgetAPIVersion returns pdb's apiversion
-func GetPodDisruptionBudgetAPIVersion() string {
-	return pdbGVK.GroupVersion().String()
-}
+func GetPodDisruptionBudgetAPIVersion() string { _ = "STUB: not implemented"; return "" }
